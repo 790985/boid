@@ -4,17 +4,16 @@
 window.addEventListener('load', setup, false);
 
 var main;   // the global Main object
-const FRAME_RATE=30;
+const FRAME_RATE=0;
 
 function setup() {
   main = new Main();
-  window.setTimeout(draw, 1000);    // wait 100ms for resources to load then start draw loop
+  window.setTimeout(draw, 0);    // wait 100ms for resources to load then start draw loop
 }
 
 function draw() {   // the animation loop
   main.run();
-  //window.setTimeout(draw, 10/FRAME_RATE);  // come back here every interval
-  draw();
+  window.setTimeout(draw, 10000/FRAME_RATE);  // come back here every interval
 }
 
 // Start main class  +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -23,7 +22,6 @@ class Main {
   constructor() {
 
     //Start create a canvas element ++++++++++++++++++++++++++++++++
-    this.boids = []
     this.canvas = document.createElement("canvas");
     this.canvas.style.backgroundColor = 'white';
     //check if canvas was made
@@ -43,14 +41,8 @@ class Main {
     // declare instance variables for main
     this.menuButtons = [];
     this.makeRect = false;
-    this.b = new Boid(this, vector2d(300, 300),"red");
-    this.a = new Boid(this, vector2d(100, 300),"blue");
-    this.c = new Boid(this, vector2d(200, 300),"green");
-    for(let i = 0; i < 1; i++){
-      console.log(i);
-        var location = vector2d(Math.random()*this.canvas.width,Math.random()*this.canvas.height)
-        this.boids.push(new Boid(this,location,"red"));
-    }
+    this.b = [];
+    this.boidSize = 20;
     //create all initial items
     this.init();
 
@@ -66,28 +58,26 @@ class Main {
 
     // create menu buttons
     this.createMenuButtons();
-
+    this.createBoids();
   }
 
   run() { // update canvas components --> called from draw()
-     for(let i = 0; i < this.boids.length; i++){
-       this.boids[i].run();
-     }
      this.render();
 
   }
 
   render() { // render or draw stuff to canvas
-    //this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
-    if(this.makeRect){
-      this.context.fillStyle = '#454446';
+   if(this.makeRect){
+     this.context.fillStyle = '#823409';
       this.context.fillRect(10, 10, 100, 100);
+    for(let i = 0; i < this.boidSize; i++)
+    {
+      this.b[i].run();
     }
-
+    }
   }
   //  +++++++++++++++++++++++++++++++++  create buttons for menu area
   createMenuButtons(){
-
      var numButtons = 5;
      //create and style all button divs
      for(let i = 0; i < numButtons; i++){
@@ -97,7 +87,7 @@ class Main {
        // place a button image on the button
        var buttImg = new Image();
        buttImg.src = "buttons/mb01.png";
-       buttImg.id = "bi";
+       buttImg.id = "b" + i;
        button.appendChild(buttImg);
        //  Add event listeners to images (not buttons)
        buttImg.addEventListener('mouseover',buttonMouseOverHandler,false);
@@ -113,9 +103,18 @@ class Main {
      }
 
   }   // end createMenuButtons
-
+  createBoids(){
+    for(let i = 0;i<this.boidSize;i++){
+        var x = Math.random()*1000;
+        var y = Math.random()*1000;
+        var loc = vector2d(x, y);
+        var boid = new Boid(this, loc);
+        this.b.push(boid);
+    }
+  }
 
 }//  end main class ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 // add functionality to your buttons here
 
 function buttonMouseOverHandler(){
@@ -129,4 +128,29 @@ function buttonMouseOutHandler(){
 
 function buttonMouseClickHandler(){
   main.makeRect = !main.makeRect;
+  if(this.id=="b1"){
+    if(!this.on){
+      main.canvas.style.backgroundColor='green';
+      this.on=true;
+    }
+    else{
+      main.canvas.style.backgroundColor='white';
+      this.on=false;
+    }
+  }
+  else if(this.id=="b0"){
+    if(!this.on){
+      for(let i=0; i<main.boidSize; i++){
+        main.b[i].boidColor();
+      }
+    }
+  }
+  else if(this.id=="b2"){
+    if(!this.on){
+      for(let i=0; i<main.boidSize; i++){
+        boid.b[i].speedX = Math.random() * 20;
+        boid.b[i].speedY = Math.random() * 20;
+      }
+    }
+  }
 }
