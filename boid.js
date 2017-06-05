@@ -9,7 +9,7 @@ class Boid {
     this.main = m;
     this.loc = location;
     this.speedX = 5;//Math.random(-1.0, 1.0);
-    this.speedY = -3;//Math.random(-1.0, 1.0);
+    this.speedY = -5;//Math.random(-1.0, 1.0);
     this.vel = vector2d(Math.random(-2.0, 2.0), Math.random(-2.0, 2.0));
     this.context = this.main.context;
     //create all initial items
@@ -35,8 +35,12 @@ class Boid {
     this.context.fillStyle = this.color;
     this.context.fill();
     this.context.beginPath();
-    this.context.arc(this.loc.x, this.loc.y, 11, 0, 2 * Math.PI, false);
-    //this.context.stroke();
+    this.context.rect(this.loc.x, this.loc.y, 11, 2);
+    this.context.stroke();
+  }
+  boidColor(){
+    var c = Math.floor(Math.random() * 360);
+    this.color = 'hsl('+c+',35%, 25%)';
   }
 
   checkEdges(){
@@ -44,9 +48,5 @@ class Boid {
     if(this.loc.x > 1000 ||this.loc.x < 10) this.speedX *= -1;
     if(this.loc.y > 750 ||this.loc.y < 10) this.speedY *= -1;
 
-  }
-  boidColor(){
-    var c = Math.floor(Math.random() * 255);
-    this.color = 'hsl('+c+',100%, 50%)';
   }
 }

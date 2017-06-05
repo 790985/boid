@@ -13,7 +13,7 @@ function setup() {
 
 function draw() {   // the animation loop
   main.run();
-  window.setTimeout(draw, 10000/FRAME_RATE);  // come back here every interval
+  window.setTimeout(draw, 100/FRAME_RATE);  // come back here every interval
 }
 
 // Start main class  +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -42,7 +42,7 @@ class Main {
     this.menuButtons = [];
     this.makeRect = false;
     this.b = [];
-    this.boidSize = 20;
+    this.boidSize = 10;
     //create all initial items
     this.init();
 
@@ -128,29 +128,29 @@ function buttonMouseOutHandler(){
 
 function buttonMouseClickHandler(){
   main.makeRect = !main.makeRect;
-  if(this.id=="b1"){
-    if(!this.on){
-      main.canvas.style.backgroundColor='green';
-      this.on=true;
-    }
-    else{
-      main.canvas.style.backgroundColor='white';
-      this.on=false;
-    }
-  }
-  else if(this.id=="b0"){
-    if(!this.on){
-      for(let i=0; i<main.boidSize; i++){
-        main.b[i].boidColor();
-      }
-    }
-  }
-  else if(this.id=="b2"){
-    if(!this.on){
-      for(let i=0; i<main.boidSize; i++){
-        boid.b[i].speedX = Math.random() * 20;
-        boid.b[i].speedY = Math.random() * 20;
-      }
-    }
-  }
+ if(this.id=="b1"){
+   if(!this.on){
+     main.canvas.style.backgroundColor='green';
+     this.on=true;
+   }
+   else{
+     main.canvas.style.backgroundColor='white';
+     this.on=false;
+   }
+ }
+ else if(this.id=="b0"){
+   if(!this.on){
+     for(let i=0; i<main.boidSize; i++){
+       main.b[i].boidColor();
+     }
+   }
+ }
+ else if(this.id=="b2"){
+   if(!this.on){
+     for(let i=0; i<main.boidSize; i++){
+       boid.b[i].speedX = Math.random() * 20;
+       boid.b[i].speedY = Math.random() * 20;
+     }
+   }
+ }
 }
